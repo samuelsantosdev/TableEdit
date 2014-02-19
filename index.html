@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Table Edit</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <script src="js/jquery-2.1.0.min.js"></script>
+        <script src="js/tableEdit-1.0.js"></script>
+        <script>
+            
+            $(function(){
+                
+                $("#tableEdit").tableEdit();
+                
+            })
+            
+        </script>
+    </head>
+    <body>
+        <h1>Table Edit</h1>
+        
+        
+        <table id="tableEdit">
+            <thead>
+                <tr>
+                    <th>Edit</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>City</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="trEdit">
+                    <td><a href="javascript:;" class="btEdit">Edit</a></td>
+                    <td class="tdEdit">Samuel</td>
+                    <td class="tdEdit">26</td>
+                    <td>Jundiaí</td>
+                </tr>
+                <tr class="trEdit">
+                    <td><a href="javascript:;" class="btEdit">Edit</a></td>
+                    <td>Joana</td>
+                    <td>28</td>
+                    <td>Campinas</td>
+                </tr>
+                <tr class="trEdit">
+                    <td><a href="javascript:;" class="btEdit">Edit</a></td>
+                    <td>Jessica</td>
+                    <td>25</td>
+                    <td>São Paulo</td>
+                </tr>
+            </tbody>
+        </table>
+        
+    </body>
+</html>
