@@ -39,6 +39,8 @@ $.fn.tableEdit = function(settings, callback, activeMasks) {
         classTd: "tdEdit", //class to cell editable
         columnsTr: null, //index td editable, if null all td editables Ex.: "1,2,3,4,5"
         classBtEdit: "btEdit", //class of button for click event
+        
+        enableDblClick: true,
 
         textBtSave: "Save", //text button save
         textBtEdit: "Edit", //text button edit
@@ -116,7 +118,7 @@ $.fn.tableEdit = function(settings, callback, activeMasks) {
             
             element.setAttribute("value", $(cell).text());
             element.setAttribute("style", "width:" + $(cell).width() + "px");
-
+            $(element).addClass("edit_from_te");
             return element;
         }
         
@@ -129,9 +131,15 @@ $.fn.tableEdit = function(settings, callback, activeMasks) {
                 $(cell).html("");
                 $(cell).append(newInput);
             });
-            
             settings.activeMasks.call(this);
-            
+        }
+        
+        //insert input in cell
+        function editTd(cell) {
+            newInput = mountNewInput($(cell));
+            $(cell).html("");
+            $(cell).append(newInput).find("input").focus();
+            settings.activeMasks.call(this);
         }
         
         //save values of inputs and create a object with values
@@ -140,10 +148,12 @@ $.fn.tableEdit = function(settings, callback, activeMasks) {
             var callBackObject = {};
                     $.each($(cells), function(index, cell) {
                         input = $(cell).find('input');
-                        newValue = $.trim($(input).val());
-                        callBackObject[$(input).attr("name")] = newValue;
-                        $(cell).html("");
-                        $(cell).append(newValue);
+                        if(typeof($(input).attr("name")) != "undefined"){
+                            newValue = $.trim($(input).val());
+                            callBackObject[$(input).attr("name")] = newValue;
+                            $(cell).html("");
+                            $(cell).append(newValue);
+                        }
                     });
             settings.callBackObject = callBackObject;
         }
@@ -186,9 +196,20 @@ $.fn.tableEdit = function(settings, callback, activeMasks) {
             changeBt(element_clicked);
         }
         
-        //bind to click
+        //edit cell with double click
+        function dblClickEvent(){
+            //if enableDblClick is true
+            if(settings.enableDblClick){
+                elementBt = $(this).parent().find("."+settings.classBtEdit);
+                changeBt(elementBt);
+                editTd($(this));
+            }
+        }
+        
+        //bind to click's
         $("." + settings.classBtEdit).bind("click", clickEvent);
-
+        $("." + settings.classTd).bind("dblclick", dblClickEvent);
+        
     });
 }
 

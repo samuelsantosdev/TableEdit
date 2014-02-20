@@ -30,6 +30,7 @@ and open the template in the editor.
             $(function(){
                 $("#tableEdit").tableEdit({
                     columnsTr: "2,3",
+                    enableDblClick: true, //enable edit td with dblclick
                     callback: function(e){
                         console.log(e.city);
                         console.log(e.age);
@@ -67,6 +68,7 @@ and open the template in the editor.
 $(function(){
         $("#tableEdit").tableEdit({
                     columnsTr: "2,3", //null = all columns editable
+                    enableDblClick: true, //enable edit td with dblclick
                     callback: function(e){
                         console.log(e.city);
                         console.log(e.age);
