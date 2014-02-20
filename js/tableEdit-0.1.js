@@ -52,12 +52,8 @@ $.fn.tableEdit = function(settings, callback, activeMasks) {
     //load settings
     settings = $.extend(defaults, settings);
     
-    if(typeof activeMasks == "function"){
-        activeMasks.call(this);
-    }
-    
     return this.each(function() {
-
+        
         //if columnsTr is not null, split to array. 
         var tdsIndex = (settings.columnsTr != null) ? settings.columnsTr.split(",") : null;
         //get all rows
@@ -94,18 +90,24 @@ $.fn.tableEdit = function(settings, callback, activeMasks) {
                     }
                 }
             });
-        }
-        ;
+        };
         
         //return create new input text
         function mountNewInput(cell) {
-            var arrayAttr = $(cell).attr("class").split(" ");
-            var attrs = new Array({name: "edit"});
-
-            element = document.createElement("input");
-            element.setAttribute("type", "text");
+            
+            var element = document.createElement("input");
+            //get string in attribute ref
+            var attrsString = $(cell).attr("ref");
+            //split attributes
+            var attrsArray = attrsString.split(",");
+            
+            var currentObj;
+            for(n=0; n < attrsArray.length; n++){
+                //separate name of attribute and value attribute
+                currentObj = attrsArray[n].split(":");
+                $(element).attr($.trim(currentObj[0]), $.trim(currentObj[1]));
+            }
             element.setAttribute("value", $(cell).text());
-            element.setAttribute("name", $(cell).attr("ref"));
             element.setAttribute("style", "width:" + $(cell).width() + "px");
 
             return element;
@@ -116,22 +118,23 @@ $.fn.tableEdit = function(settings, callback, activeMasks) {
             var cells = $(tr).find("." + settings.classTd);
 
             $.each($(cells), function(index, cell) {
-                text = $.trim($(cell).text());
                 newInput = mountNewInput($(cell));
                 $(cell).html("");
                 $(cell).append(newInput);
             });
+            
+            settings.activeMasks.call(this);
             
         }
         
         //save values of inputs and create a object with values
         function saveTr(tr) {
             var cells = $(tr).find("." + settings.classTd);
-            var callBackObject = new Array();
+            var callBackObject = {};
                     $.each($(cells), function(index, cell) {
                         input = $(cell).find('input[type=text]');
                         newValue = $.trim($(input).val());
-                        callBackObject.push($(input).attr("name"), newValue);
+                        callBackObject[$(input).attr("name")] = newValue;
                         $(cell).html("");
                         $(cell).append(newValue);
                     });
@@ -147,7 +150,7 @@ $.fn.tableEdit = function(settings, callback, activeMasks) {
         function changeBt(bt)
         {
             var hasClass = $(bt).hasClass(settings.classBtEdit);
-            $(bt).attr("class", "").addClass(((hasClass) ? "btSave" : settings.classBtEdit));
+            $(bt).attr("class", "").addClass( ((hasClass) ? "btSave" : settings.classBtEdit) );
 
             $(bt).text(((hasClass) ? settings.textBtSave : settings.textBtEdit));
             $(bt).val(((hasClass) ? settings.textBtSave : settings.textBtEdit));
