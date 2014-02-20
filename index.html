@@ -9,14 +9,28 @@ and open the template in the editor.
         <title>Table Edit</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
+        <style>
+            body{font-size:12px; font-family:verdana; font-color:#333;}
+            body h1{color:#069;}
+            body table{border:0px;}
+            body table thead tr th{background:#333; color:#fff; padding:3px 10px;}
+            body table tbody tr td{background:#ececec; padding:3px 10px;}
+            body table tbody tr td input{border:1px solid #ccc;}
+            body table tbody tr td a{color:#069; text-decoration: none;}
+            body table tbody tr td a:hover{color:red; text-decoration: none;}
+            body xmp{border:1px solid #999; border-radius:10px; padding:15px; color:#333; float:left; clear: both;}
+        </style>
         <script src="js/jquery-2.1.0.min.js"></script>
         <script src="js/tableEdit-0.1.js"></script>
         <script>
             
             $(function(){
-                
-                $("#tableEdit").tableEdit();
-                
+                $("#tableEdit").tableEdit({
+                    columnsTr: "2,3",
+                    callback: function(e){
+                        console.log(e);
+                    }
+                });
             })
             
         </script>
@@ -24,7 +38,32 @@ and open the template in the editor.
     <body>
         <h1>Table Edit</h1>
         
+        <a href="#sample1">Sample1</a>
+        <p>
+            How to use?
+        <xmp>
+            <head>
+        <!-- jquery framework load -->
+        <script src="js/jquery-2.1.0.min.js"></script>
         
+        <!-- plugin tableEdit load -->
+        <script src="js/tableEdit-0.1.js"></script>
+        
+        <!-- load plugin for element -->
+        <script>
+            
+            $(function(){
+                $("#tableEdit").tableEdit();
+            })
+            
+        </script>
+            </head>
+        
+        
+        </xmp>
+        </p>
+        <br style="clear: both;">
+        <div id="sample1">
         <table id="tableEdit">
             <thead>
                 <tr>
@@ -56,5 +95,6 @@ and open the template in the editor.
             </tbody>
         </table>
         
-    </body>
+        </div>
+</body>
 </html>

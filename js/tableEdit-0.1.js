@@ -28,7 +28,7 @@
  * @Release: 2014-02-19
  */
 
-$.fn.tableEdit = function(settings, callback) {
+$.fn.tableEdit = function(settings, callback, activeMasks) {
     /*
      * 
      * Settings default
@@ -43,21 +43,27 @@ $.fn.tableEdit = function(settings, callback) {
         textBtSave: "Save", //text button save
         textBtEdit: "Edit", //text button edit
         
-        enableCallBack: true,
-        callBackObject: null,
-        callback: function(){}
+        callBackObject: null, //receive object
+        callback: function(){}, //return object with of values change
+        activeMasks: function(){} //use to call function enable masks
 
     }; //cells editables
 
     //load settings
     settings = $.extend(defaults, settings);
-
+    
+    if(typeof activeMasks == "function"){
+        activeMasks.call(this);
+    }
+    
     return this.each(function() {
 
-
+        //if columnsTr is not null, split to array. 
         var tdsIndex = (settings.columnsTr != null) ? settings.columnsTr.split(",") : null;
+        //get all rows
         var trsTable = $(this).find("tbody tr");
-
+        
+        //funtion verify exists index
         function inArray(needle, haystack) {
             var length = haystack.length;
             for (var i = 0; i < length; i++) {
@@ -66,13 +72,19 @@ $.fn.tableEdit = function(settings, callback) {
             }
             return false;
         }
-
+        
+        //loop in all rows
         for (k = 0; k < trsTable.length; k++) {
             element = $(trsTable)[k];
             tdsLine = $(element).find("td");
-
+            
             $.each(tdsLine, function(index, td) {
+                //if cell not have button edit
                 if ($(td).find("." + settings.classBtEdit).length == 0) {
+                    /*
+                     * insert class edition
+                     * for all columns or columns in tdsIndex
+                     */
                     if (tdsIndex == null) {
                         $(td).addClass(settings.classTd);
                     } else {
@@ -84,7 +96,8 @@ $.fn.tableEdit = function(settings, callback) {
             });
         }
         ;
-
+        
+        //return create new input text
         function mountNewInput(cell) {
             var arrayAttr = $(cell).attr("class").split(" ");
             var attrs = new Array({name: "edit"});
@@ -97,7 +110,8 @@ $.fn.tableEdit = function(settings, callback) {
 
             return element;
         }
-
+        
+        //insert input in cell
         function editTr(tr) {
             var cells = $(tr).find("." + settings.classTd);
 
@@ -107,8 +121,10 @@ $.fn.tableEdit = function(settings, callback) {
                 $(cell).html("");
                 $(cell).append(newInput);
             });
+            
         }
-
+        
+        //save values of inputs and create a object with values
         function saveTr(tr) {
             var cells = $(tr).find("." + settings.classTd);
             var callBackObject = new Array();
@@ -122,10 +138,12 @@ $.fn.tableEdit = function(settings, callback) {
             settings.callBackObject = callBackObject;
         }
         
+        //return object created in saveTr()
         function getCallback(){
             settings.callback(settings.callBackObject);//how can I send var a,b here
         }
         
+        //change buttons, save to edit and edit to save
         function changeBt(bt)
         {
             var hasClass = $(bt).hasClass(settings.classBtEdit);
@@ -134,26 +152,31 @@ $.fn.tableEdit = function(settings, callback) {
             $(bt).text(((hasClass) ? settings.textBtSave : settings.textBtEdit));
             $(bt).val(((hasClass) ? settings.textBtSave : settings.textBtEdit));
         }
-
+        
+        //event click in button
         function clickEvent() {
 
             var element_clicked = $(this);
             element_verify = element_clicked;
+            
+            //search tr, element by element 
             while ($(element_verify).is("tr") == false) {
                 element_verify = $(element_verify).parent();
             }
-
+            
+            //if save button, call function save
             if ($(this).hasClass("btSave")) {
                 saveTr(element_verify);
-                if(settings.enableCallBack){
-                    getCallback();
-                }
+                getCallback();
             } else {
+                //if edit button, call function save
                 editTr(element_verify);
             }
+            //call change button after click
             changeBt(element_clicked);
         }
-
+        
+        //bind to click
         $("." + settings.classBtEdit).bind("click", clickEvent);
 
     });
