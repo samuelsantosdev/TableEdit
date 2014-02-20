@@ -11,14 +11,17 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width">
         <style>
             body{font-size:12px; font-family:verdana; font-color:#333;}
-            body h1{color:#069;}
-            body table{border:0px;}
+            body h1{color:#069; text-align: center;}
+            body p{width:850px; margin:auto; position:relative; text-align:center; }
+            body #code{width:950px; margin:auto;}
+            body table{border:0px; align:center;}
             body table thead tr th{background:#333; color:#fff; padding:3px 10px;}
             body table tbody tr td{background:#ececec; padding:3px 10px;}
             body table tbody tr td input{border:1px solid #ccc;}
             body table tbody tr td a{color:#069; text-decoration: none;}
             body table tbody tr td a:hover{color:red; text-decoration: none;}
-            body xmp{border:1px solid #999; border-radius:10px; padding:15px; color:#333; float:left; clear: both;}
+            body xmp{border:1px solid #999; border-radius:10px; padding:10px; color:#333; float:left; clear: both;}
+            footer{float:left; width:100%; padding:30px 0px; text-align: center; line-height:25px;}
         </style>
         <script src="js/jquery-2.1.0.min.js"></script>
         <script src="js/tableEdit-0.1.js"></script>
@@ -30,9 +33,15 @@ and open the template in the editor.
                     callback: function(e){
                         console.log(e.city);
                         console.log(e.age);
+                        /*
+                         * code for ajax
+                         */
                     }, 
                     activeMasks: function(){
                        console.log("function enable masks");
+                       /*
+                        * function for active masks
+                        */
                     }
                 });
             })
@@ -42,9 +51,9 @@ and open the template in the editor.
     <body>
         <h1>Table Edit</h1>
         
-        <a href="#sample1">Sample1</a>
         <p>
             How to use?
+        <div id="code">
 <xmp>
 <head>
 <!-- jquery framework load -->
@@ -56,13 +65,28 @@ and open the template in the editor.
 <!-- load plugin for element -->
 <script>
 $(function(){
-      $("#tableEdit").tableEdit();
+        $("#tableEdit").tableEdit({
+                    columnsTr: "2,3", //null = all columns editable
+                    callback: function(e){
+                        console.log(e.city);
+                        console.log(e.age);
+                        /*
+                         * code for ajax
+                         */
+                    }, 
+                    activeMasks: function(){
+                       console.log("function enable masks");
+                       /*
+                        * function for active masks
+                        */
+                    }
+                });
 })
 </script>
 </head>
 
 <body>
-    <table id="tableEdit">
+    <table id="tableEdit" align="center" >
             <thead>
                 <tr>
                     <th>Edit</th>
@@ -84,12 +108,7 @@ $(function(){
                     <td>28</td>
                     <td>Campinas</td>
                 </tr>
-                <tr>
-                    <td><a href="javascript:;" class="btEdit">Edit</a></td>
-                    <td>Jessica</td>
-                    <td>25</td>
-                    <td>São Paulo</td>
-                </tr>
+                
             </tbody>
         </table>
 </body>
@@ -97,10 +116,12 @@ $(function(){
             
         
 </xmp>
-        </p>
-        <br style="clear: both;">
+        </div>
+</p>
+
+<br style="clear: both;">
         <div id="sample1">
-        <table id="tableEdit">
+        <table id="tableEdit" align="center">
             <thead>
                 <tr>
                     <th>Edit</th>
@@ -122,15 +143,25 @@ $(function(){
                     <td>28</td>
                     <td>Campinas</td>
                 </tr>
-                <tr>
-                    <td><a href="javascript:;" class="btEdit">Edit</a></td>
-                    <td>Jessica</td>
-                    <td>25</td>
-                    <td>São Paulo</td>
-                </tr>
+               
             </tbody>
         </table>
         
         </div>
+        
+
+        <br/>
+        <br/>
+
+        
+        
+        <footer>
+            samucasantos.com.br 2014 - <a href="mailto:samukaelsantos@gmail.com">samukaelsantos@gmail.com</a>
+            <br/>
+            <a href="https://github.com/samuelsantosdev/TableEdit" target="_blank">https://github.com/samuelsantosdev/TableEdit</a>
+            <br/>
+            Deus é fiel.
+        </footer>
+        
 </body>
 </html>

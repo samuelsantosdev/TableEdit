@@ -98,15 +98,22 @@ $.fn.tableEdit = function(settings, callback, activeMasks) {
             var element = document.createElement("input");
             //get string in attribute ref
             var attrsString = $(cell).attr("ref");
-            //split attributes
-            var attrsArray = attrsString.split(",");
-            
-            var currentObj;
-            for(n=0; n < attrsArray.length; n++){
-                //separate name of attribute and value attribute
-                currentObj = attrsArray[n].split(":");
-                $(element).attr($.trim(currentObj[0]), $.trim(currentObj[1]));
+            if(attrsString != null){
+                //split attributes
+                var attrsArray = attrsString.split(",");
+
+                var currentObj;
+                for(n=0; n < attrsArray.length; n++){
+                    //separate name of attribute and value attribute
+                    currentObj = attrsArray[n].split(":");
+                    $(element).attr($.trim(currentObj[0]), $.trim(currentObj[1]));
+                }
+            }else{
+                indexCell = $(cell).parent().children().index($(cell));
+                element.setAttribute("name", "column_"+indexCell);
+                element.setAttribute("type", "text");
             }
+            
             element.setAttribute("value", $(cell).text());
             element.setAttribute("style", "width:" + $(cell).width() + "px");
 
@@ -132,7 +139,7 @@ $.fn.tableEdit = function(settings, callback, activeMasks) {
             var cells = $(tr).find("." + settings.classTd);
             var callBackObject = {};
                     $.each($(cells), function(index, cell) {
-                        input = $(cell).find('input[type=text]');
+                        input = $(cell).find('input');
                         newValue = $.trim($(input).val());
                         callBackObject[$(input).attr("name")] = newValue;
                         $(cell).html("");
