@@ -61,7 +61,7 @@ $.fn.tableEdit = function(settings, callback, activeMasks) {
         //get all rows
         var trsTable = $(this).find("tbody tr");
         
-        //funtion verify exists index
+        //function verify exists index
         function inArray(needle, haystack) {
             var length = haystack.length;
             for (var i = 0; i < length; i++) {
