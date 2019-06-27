@@ -2,6 +2,12 @@
 
 # TableEdit
 
+### Online example
+
+https://samuelsantosdev.github.io/TableEdit/
+
+### How to
+
 ```html
 <script src="js/tableEdit-0.1.js"></script>
 
